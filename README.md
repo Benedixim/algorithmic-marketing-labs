@@ -26,6 +26,7 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 python code/download_data.py
 python code/run_all.py
+python code/make_charts.py
 ```
 
 В Windows активируйте окружение командой `.venv\Scripts\activate`.
@@ -41,12 +42,11 @@ JSON и CSV с результатами сохраняются в `results/`. П
 ```bash
 npm install
 python code/lab09.py
-python code/make_charts.py
 ```
 
 Скрипт [generate.mjs](code/generate.mjs) запускает Qwen2.5-1.5B-Instruct через Transformers.js на CPU. При первом запуске скачиваются публичные веса ONNX q4, около 1,7 ГБ, в `model-cache/`. Платный API и ключи не нужны. Генерация может занимать значительное время.
 
-`make_charts.py` читает рассчитанные результаты, включая результат генерации ЛР 9, и сохраняет PNG в `figures/`.
+`make_charts.py` читает результаты расчётов и сохраняет 13 PNG в `figures/`. Генерация текста ЛР 9 для построения графиков не требуется.
 
 ## Источники и смысл результатов
 
