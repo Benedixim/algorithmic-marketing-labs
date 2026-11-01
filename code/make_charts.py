@@ -38,19 +38,19 @@ label_bars(ax,b,'%d');ax.set(xlabel='Число клиентов',xlim=(0,1900))
 save(fig,'lab01_clusters')
 
 a=read('02');fig,ax=figure()
-b=ax.bar(['Популярные товары','Item-to-item'],[a['baseline_hit5']*100,a['hit5']*100])
-label_bars(ax,b,'%.1f%%');ax.set(ylabel='Hit rate@5, %',ylim=(0,30))
+b=ax.bar(['Популярные товары','По сходству товаров'],[a['baseline_hit5']*100,a['hit5']*100])
+label_bars(ax,b,'%.1f%%');ax.set(ylabel='Клиенты с попаданием, %',ylim=(0,30))
 save(fig,'lab02_hit_rate')
 
 a=read('04')
 with (ROOT/'data'/'advertising.csv').open() as f:rows=list(csv.DictReader(f))
 fig,ax=figure();ax.scatter([float(r['TV']) for r in rows],[float(r['sales']) for r in rows],s=22)
-ax.set(xlabel='Расходы на TV, тыс. $',ylabel='Продажи, тыс. единиц')
+ax.set(xlabel='Расходы на телевидение, тыс. $',ylabel='Продажи, тыс. единиц')
 save(fig,'lab04_scatter')
 fig,ax=figure();x=np.arange(3)
 ax.bar(x-.19,a['baseline'],.38,label='Средние расходы')
 ax.bar(x+.19,a['optimized'],.38,label='Сценарий модели')
-ax.set(xticks=x,xticklabels=['TV','Радио','Газеты'],ylabel='Расходы, тыс. $',ylim=(0,190));ax.legend()
+ax.set(xticks=x,xticklabels=['Телевидение','Радио','Газеты'],ylabel='Расходы, тыс. $',ylim=(0,190));ax.legend()
 save(fig,'lab04_budget')
 
 a=read('05');fig,ax=figure()
@@ -66,11 +66,11 @@ ax.plot([datetime.fromisoformat(v['date']) for v in a['sample']],[v['price'] for
 ax.set(xlabel='Дата',ylabel='Средневзвешенная цена, £',ylim=(1.4,1.74));fig.autofmt_xdate(rotation=25)
 save(fig,'lab06_price')
 fig,ax=figure();b=ax.bar(['Постоянная медиана','Ridge'],[a['baseline_mae'],a['mae']]);label_bars(ax,b)
-ax.set(ylabel='MAE прогноза спроса, шт.',ylim=(0,125))
+ax.set(ylabel='Средняя ошибка спроса, шт.',ylim=(0,125))
 save(fig,'lab06_error')
 
 a=read('07');fig,ax=figure()
-names=['Jumbo Bag Doily','Lunch Bag Doily','Kneeling Pad','Hot Water Bottle','Jumbo Bag Leaf']
+names=['Большая сумка Doily','Сумка для обеда Doily','Садовый коврик','Грелка','Большая сумка Leaf']
 b=ax.barh(names,[v['score']*100 for v in a['top']]);label_bars(ax,b,'%.1f%%')
 ax.set(xlabel='Нижняя граница Уилсона, %',xlim=(0,33));ax.invert_yaxis()
 save(fig,'lab07_ranking')
