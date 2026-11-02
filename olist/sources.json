@@ -42,7 +42,12 @@
           "bytes": 2613,
           "sha256": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278"
         }
-      }
+      },
+      "selection_chain": [
+        "https://www.python4data.science/en/latest/data-processing/opendata.html#search-engines",
+        "https://www.kaggle.com/datasets",
+        "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce"
+      ]
     },
     {
       "title": "Marketing Funnel by Olist",
@@ -58,7 +63,30 @@
           "bytes": 703836,
           "sha256": "5537753b7549ce4068e52e2402c29f2773c5375fc0575520ae8f3f301f666573"
         }
-      }
+      },
+      "selection_chain": [
+        "https://www.python4data.science/en/latest/data-processing/opendata.html#search-engines",
+        "https://www.kaggle.com/datasets",
+        "https://www.kaggle.com/datasets/olistbr/marketing-funnel-olist"
+      ]
     }
-  ]
+  ],
+  "selection": {
+    "policy": "Выбор внутри каталогов, перечисленных на Python for Data Science, разрешён пользователем.",
+    "portal": "https://www.python4data.science/en/latest/data-processing/opendata.html#search-engines",
+    "catalog_label": "Kaggle Datasets",
+    "catalog": "https://www.kaggle.com/datasets",
+    "named_directly_on_tutorial": false,
+    "checked_on": "2026-11-02",
+    "chain": [
+      [
+        "Python for Data Science",
+        "https://www.python4data.science/en/latest/data-processing/opendata.html#search-engines"
+      ],
+      [
+        "Kaggle Datasets",
+        "https://www.kaggle.com/datasets"
+      ]
+    ]
+  }
 }

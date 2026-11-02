@@ -1,0 +1,103 @@
+{
+  "date": "2026-11-02",
+  "website": "https://www.python4data.science/en/latest/index.html",
+  "catalog_page": "https://www.python4data.science/en/latest/data-processing/opendata.html#search-engines",
+  "coverage": "Проверены каталог Open data, поисковый индекс учебника и подходящие учебные примеры. Это не утверждение о ручном прочтении каждой страницы каждого внешнего каталога.",
+  "candidates": [
+    {
+      "name": "Criteo Click Logs",
+      "relation": "Прямо назван в Open data",
+      "source": "https://huggingface.co/datasets/criteo/CriteoClickLogs",
+      "fields": "Метка клика, 13 числовых и 26 категориальных признаков",
+      "fit": [
+        "1",
+        "4 частично"
+      ],
+      "missing": "Значения признаков обезличены, семантика скрыта. Нет покупок, цен, отзывов и открытых рекламных затрат."
+    },
+    {
+      "name": "Shopper Intent Prediction",
+      "relation": "Прямо назван в Open data",
+      "source": "https://github.com/coveooss/shopper-intent-prediction-nature-2020",
+      "fields": "Сессия, тип события, действие с товаром, коды товаров, время, адрес страницы",
+      "fit": [
+        "1",
+        "2",
+        "7 популярность"
+      ],
+      "missing": "В опубликованной схеме нет постоянного кода покупателя, сумм и отзывов. Полная загрузка требует формы и согласия с условиями."
+    },
+    {
+      "name": "Multi-Domain Sentiment",
+      "relation": "Прямо назван в Open data",
+      "source": "https://www.cs.jhu.edu/~mdredze/datasets/sentiment/",
+      "fields": "Текст отзыва, товарная область, звёзды от 1 до 5",
+      "fit": [
+        "1",
+        "5",
+        "7 оценки",
+        "9 коммуникации по отзывам"
+      ],
+      "missing": "Отзыв не является записью покупки. Нет истории чеков с суммами для RFM и нет данных рекламы."
+    },
+    {
+      "name": "sales_data.csv",
+      "relation": "Используется в учебном примере Voluptuous",
+      "tutorial": "https://www.python4data.science/en/latest/clean-prep/libs-methods/voluptuous.html",
+      "source": "https://raw.githubusercontent.com/kjam/data-cleaning-101/master/data/sales_data.csv",
+      "fields": "213 строк, дата, город, магазин, номер продажи, сумма, сотрудник, служебный индекс",
+      "fit": [
+        "1"
+      ],
+      "missing": "Нет покупателя, товарной позиции, отзывов и кампаний. Нельзя подменять сумму продажи ценой отдельного товара."
+    },
+    {
+      "name": "customer_data_duped.csv",
+      "relation": "Используется в примере Deduplicate data",
+      "tutorial": "https://www.python4data.science/en/latest/clean-prep/libs-methods/deduplicate.html",
+      "source": "https://raw.githubusercontent.com/kjam/data-cleaning-101/master/data/customer_data_duped.csv",
+      "fields": "2080 строк, восемь полей контакта и дублированных записей",
+      "fit": [
+        "1 задача качества данных"
+      ],
+      "missing": "Нет транзакций и товарных характеристик. Не годится для RFM и прогнозирования оттока по покупкам."
+    },
+    {
+      "name": "The Complete Journey",
+      "relation": "Альтернатива при выборе в каталогах",
+      "source": "https://www.dunnhumby.com/source-files/",
+      "fields": "Покупки домохозяйств, товары, маркетинговые контакты",
+      "fit": [
+        "1",
+        "2",
+        "4",
+        "6",
+        "7 популярность",
+        "8",
+        "9",
+        "10"
+      ],
+      "missing": "В описании нет текстов отзывов. Для работы 5 нужен отдельный источник и отдельный бизнес-контекст. Проверено описание, данные не пересчитывались."
+    },
+    {
+      "name": "Olist E-Commerce и Marketing Funnel",
+      "relation": "Выбраны внутри Kaggle Datasets по ссылке из Open data",
+      "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+      "funnel": "https://www.kaggle.com/datasets/olistbr/marketing-funnel-olist",
+      "fields": "Заказы, покупатели, продавцы, позиции с ценами, тексты и оценки, источники заявок и подключения",
+      "fit": [
+        "1",
+        "2",
+        "4 со связанным выпуском",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10 отток продавцов"
+      ],
+      "missing": "Два связанных выпуска одного бизнеса. Нет рекламных расходов и себестоимости. Отток задан как прекращение заказов, а не подтверждённый разрыв договора. Название Olist прямо в учебнике не указано."
+    }
+  ],
+  "selection_reason": "Olist позволяет сохранить один бизнес-контекст, использовать реальные тексты и оценки и связать рекламу и удержание с продавцами. Для кампании используется второй связанный выпуск. Источник не выдаётся за прямое упоминание в учебнике."
+}
