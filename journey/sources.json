@@ -1,0 +1,50 @@
+{
+  "journey": {
+    "name": "The Complete Journey",
+    "page": "https://www.kaggle.com/datasets/frtgnn/dunnhumby-the-complete-journey",
+    "version": 1,
+    "archive_sha256": "19123b97fdc28d2a76aa0188f8ceaa69ef43b493d1829193ca3f1973843e1b4c",
+    "download": "Downloaded from the Kaggle web interface after user sign-in. Original two-year CSV release, 2500 households.",
+    "unused_file": "causal_data.csv is present in the archive but not required for the chosen campaign-coupon analysis."
+  },
+  "journey_files": {
+    "hh_demographic.csv": {
+      "bytes": 44349,
+      "sha256": "aeb10246d0c4f3d3433d1f441265b6c7e70b0926129b834a3b589517948b9f22"
+    },
+    "coupon.csv": {
+      "bytes": 2822804,
+      "sha256": "718f4d466df8a54bbff45f340e0b601049721b0715503394a601bac3093c727d"
+    },
+    "campaign_table.csv": {
+      "bytes": 95874,
+      "sha256": "a716f88953c9ddf8847e191d862e8d022afd19cf7419f52cbe6dde950a121f21"
+    },
+    "coupon_redempt.csv": {
+      "bytes": 54108,
+      "sha256": "70a98f3bfb28be0dd850f19c8d806d2a23e44014546651367b21538db6fba1f8"
+    },
+    "product.csv": {
+      "bytes": 6429896,
+      "sha256": "7ecbcec41e0f1e5a51b43a359965cc50dc5586a2b900a378b64032750fedc949"
+    },
+    "campaign_desc.csv": {
+      "bytes": 540,
+      "sha256": "632535c6bcdd97b5681e84c2c0652ddc4eaca8a0f899a3bb37dae8dbdc089684"
+    },
+    "transaction_data.csv": {
+      "bytes": 141742346,
+      "sha256": "3a685c0729cef664d634486189f774518b84f53cde7cbf701a5963238692b476"
+    }
+  },
+  "amazon": {
+    "name": "Multi-Domain Sentiment Dataset",
+    "page": "https://www.cs.jhu.edu/~mdredze/datasets/sentiment/",
+    "download": "https://www.cs.jhu.edu/~mdredze/datasets/sentiment/domain_sentiment_data.tar.gz",
+    "release": "Original four-domain release, 2007, accessible through still available here on the dataset page.",
+    "sha256": "e65d4dae3f223316a5db426b2c3f7f3667e9b165f03c024cb4875e11af4cd941",
+    "used": "electronics/positive.review and electronics/negative.review, 2000 reviews before deduplication.",
+    "citation": "John Blitzer, Mark Dredze, Fernando Pereira. Biographies, Bollywood, Boom-boxes and Blenders: Domain Adaptation for Sentiment Classification. ACL 2007."
+  },
+  "provenance": "Python for Data Science Open data directly lists Multi-Domain Sentiment Dataset and links the Kaggle Datasets catalog. Complete Journey is selected inside that catalog and is not claimed to be directly named in the textbook."
+}
