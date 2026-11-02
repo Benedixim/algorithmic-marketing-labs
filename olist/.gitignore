@@ -1,0 +1,9 @@
+data/
+results/
+figures/
+model-cache/
+node_modules/
+.venv/
+__pycache__/
+*.pptx
+presentation.html
