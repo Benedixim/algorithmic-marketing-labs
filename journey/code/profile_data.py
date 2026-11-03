@@ -24,19 +24,40 @@ def number(v, decimals=0):
         return f'{v:,.{decimals}f}'.replace(',',' ').replace('.',',').replace('-', '−')
     return f'{v:,.0f}'.replace(',',' ').replace('-', '−')
 
-def hist(values, name, discrete=False):
+def summary(values, decimals=0):
     x=pd.Series(values).dropna().astype(float)
-    fig,ax=plt.subplots(figsize=(2.2,.48))
-    fig.subplots_adjust(left=.015,right=.985,bottom=.06,top=.98)
+    return 'Медиана '+number(x.median(),decimals)+'\nОт '+number(x.min(),decimals)+' до '+number(x.max(),decimals)
+
+def hist(values, name, discrete=False, label='',wide=False):
+    x=pd.Series(values).dropna().astype(float)
+    fig,ax=plt.subplots(figsize=((7.2 if wide else 3.8),.85))
+    fig.subplots_adjust(left=(.11 if wide else .20),right=(.93 if wide else .85),bottom=.44,top=.91)
     if discrete:
         counts=x.value_counts().sort_index()
-        ax.bar(counts.index,counts.values,width=.7,color='#2474AE')
+        heights=counts.values/len(x)*100
+        ax.bar(counts.index,heights,width=.7,color='#2474AE')
+        ax.set_xticks(range(int(x.min()),int(x.max())+1))
     else:
         cap=float(x.quantile(.99))
         shown=x.clip(upper=cap)
         bins=min(16,max(1,int(shown.nunique())))
-        ax.hist(shown,bins=bins,color='#2474AE',edgecolor='white',linewidth=.45)
-    ax.set_axis_off()
+        heights,_,_=ax.hist(shown,bins=bins,weights=np.full(len(shown),100/len(shown)),color='#2474AE',edgecolor='white',linewidth=.45)
+        lo=float(shown.min());hi=float(shown.max())
+        if lo<hi:
+            ticks=[lo,(lo+hi)/2,hi]
+            def tick(v):
+                if abs(v-round(v))<.02:return number(round(v))
+                return f'{v:.1f}'.replace('.',',').replace('-','−')
+            labels=[tick(v) for v in ticks]
+            if cap<float(x.max()):labels[-1]='≥'+labels[-1]
+            ax.set_xticks(ticks,labels)
+    ymax=max(10,float(np.ceil(max(heights)/10)*10))
+    ax.set_ylim(0,ymax)
+    ax.set_yticks([0,ymax],['0%',number(ymax)+'%'])
+    ax.tick_params(axis='both',labelsize=14,length=2,pad=1)
+    ax.set_xlabel(label,fontsize=13,labelpad=0)
+    ax.spines[['top','right']].set_visible(False)
+    ax.spines[['bottom','left']].set_linewidth(.6)
     fig.savefig(FIG/(name+'.png'),dpi=200)
     plt.close(fig)
 
@@ -46,12 +67,14 @@ def entry(data,key,description,kind,plot_values=None,plot_label='',decimals=0,di
     if s.dtype=='object': missing+=int(s.fillna('x').str.strip().eq('').sum())
     name='profile_journey_'+key.lower()
     values=s if plot_values is None else plot_values
-    hist(values,name,discrete)
+    wide=key in ['QUANTITY','SALES_VALUE','RETAIL_DISC','COUPON_DISC','COUPON_MATCH_DISC','TRANS_TIME']
+    axis_label=plot_label or ('День' if key=='DAY' else 'Неделя' if key=='WEEK_NO' else 'Количество' if key=='QUANTITY' else 'Доллары')
+    hist(values,name,discrete,axis_label,wide)
     valid=s.dropna()
     result=dict(key=key,description=description,type=kind,missing=missing,
                 unique=int(valid.nunique()),figure=name,plot_label=plot_label)
     if plot_values is not None:
-        result['stats']=number(valid.nunique())+' кодов\nМедиана '+number(pd.Series(values).median())
+        result['stats']=summary(values)
         result['record_count_median']=float(pd.Series(values).median())
     else:
         result.update(min=float(valid.min()),median=float(valid.median()),max=float(valid.max()))
@@ -78,7 +101,8 @@ rows2=[entry(raw,'QUANTITY','Количество товара','Целое'),
        entry(raw,'TRANS_TIME','Часы и минуты','Целое',raw.TRANS_TIME//100,'Час покупки')]
 # Time is numeric HHMM, but neither its cardinality nor its median is an ID statistic.
 time=rows2[-1];v=int(raw.TRANS_TIME.median())
-time['stats']='Медиана '+f'{v//100:02d}.{v%100:02d}'+'\n'+number(raw.TRANS_TIME.nunique())+' значений'
+clock=lambda n:f'{int(n)//100:02d}.{int(n)%100:02d}'
+time['stats']='Медиана '+clock(v)+'\nОт '+clock(raw.TRANS_TIME.min())+' до '+clock(raw.TRANS_TIME.max())
 time['median']=float(raw.TRANS_TIME.median())
 
 current=raw.drop_duplicates().copy()
@@ -94,12 +118,6 @@ expected=pd.read_json(OUT/'lab01.json',typ='series')
 assert len(current)==int(expected.clean_rows)
 households=current.groupby('household_key').agg(baskets=('BASKET_ID','nunique'),paid=('paid','sum'),products=('PRODUCT_ID','nunique'))
 correlations=households.corr().to_dict()
-fig,ax=plt.subplots(figsize=(2.6,2.0),layout='constrained')
-ax.scatter(households.baskets,households.paid,s=5,alpha=.35,color='#2474AE',edgecolors='none')
-ax.set_xlabel('Корзины',fontsize=11);ax.set_ylabel('Оплата, тыс. $',fontsize=11)
-ax.set_yticks([0,10000,20000,30000],['0','10','20','30'])
-ax.tick_params(labelsize=9);ax.spines[['top','right']].set_visible(False)
-fig.savefig(FIG/'profile_journey_correlation.png',dpi=180);plt.close(fig)
 journey=dict(raw_rows=len(raw),columns=len(raw.columns),fields=rows1+rows2,
     page1=rows1,page2=rows2,duplicates=int(raw.duplicated().sum()),
     flow=flow,retained_share=len(current)/len(raw),
@@ -128,14 +146,10 @@ for key,desc,kind,values,label in spec:
     row=dict(key=key,description=desc,type=kind,missing=missing,unique=int(s.nunique()),figure=fig_name,plot_label=label)
     if key=='helpful':
         values=pd.to_numeric(s.str.extract(r'^(\d+)')[0],errors='coerce')
-        row['stats']='Медиана '+number(values.median())+' голоса\n'+number(s.nunique())+' вариантов'
-    elif key=='asin':row['stats']=number(s.nunique())+' товаров\nМедиана '+number(values.median())
-    elif key=='rating':row['stats']='Медиана '+number(s.median(),1)+'\nОценки 1, 2, 4, 5'
-    elif key=='date':row['stats']='С '+str(int(s.min().year))+' по '+str(int(s.max().year))+'\n'+number(s.nunique())+' даты'
-    elif key=='product_name':row['stats']=number(s.nunique())+' названий\nМедиана '+number(values.median())
-    else:row['stats']='Медиана '+number(values.median())+(' слова' if key=='title' else ' слов')+'\n'+number(s.nunique())+' текстов'
+    row['stats']=summary(values,1 if key=='rating' else 0)
+    if key=='date':row['stats']='Медиана '+str(int(pd.Series(values).median()))+'\nОт '+str(int(pd.Series(values).min()))+' до '+str(int(pd.Series(values).max()))
     row['distribution_median']=float(pd.Series(values).median())
-    hist(values,fig_name,key=='rating')
+    hist(values,fig_name,key=='rating',label)
     arows.append(row)
 no_empty=amazon[amazon.norm.ne('') & amazon.asin.ne('') & amazon.rating.isin([1,2,4,5])]
 unique=no_empty.drop_duplicates('norm')
