@@ -6,3 +6,5 @@ for lab in ['01','02','04','05','06','07','08','09','10']:
     args=[sys.executable,str(code/('lab'+lab+'.py'))]
     if lab=='09' and '--generate' not in sys.argv:args.append('--prepare')
     subprocess.run(args,check=True)
+
+subprocess.run([sys.executable,str(code/'profile_data.py')],check=True)
