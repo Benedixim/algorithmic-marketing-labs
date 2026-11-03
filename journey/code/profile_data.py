@@ -49,7 +49,6 @@ def hist(values, name, discrete=False, label='',wide=False):
                 if abs(v-round(v))<.02:return number(round(v))
                 return f'{v:.1f}'.replace('.',',').replace('-','−')
             labels=[tick(v) for v in ticks]
-            if cap<float(x.max()):labels[-1]='≥'+labels[-1]
             ax.set_xticks(ticks,labels)
     ymax=max(10,float(np.ceil(max(heights)/10)*10))
     ax.set_ylim(0,ymax)
